@@ -10,12 +10,12 @@
         "value": "main"
       },
       "resolved": {
-        "commit": "149cb39f559cafcb82910f8662b3f4e3b9ee5574",
-        "treeSha": "6fcb2f537c006897f2ce2cabf8e4b473589f394e"
+        "commit": "3a8c23a67884167411af230a5ff20975548756a5",
+        "treeSha": "e9b5c546a56a15338eef99b7bfb753ecb243f3ad"
       },
       "target": "skills/productivity/reading/cangjie-skill",
-      "contentSha256": "sha256:265c752f24f47d6ce98f5516557cb91645a2ec9069546bcdd0c95fd7e1d7741c",
-      "syncedAt": "2026-08-07T16:51:54.433Z",
+      "contentSha256": "sha256:2f111cc6199be5e8c7dea7f80248cbb5e0b985480f35346b70891153ed44fe45",
+      "syncedAt": "2026-08-23T03:59:43.345Z",
       "riskFlags": [
         "contains executable helper scripts"
       ]
@@ -29,12 +29,12 @@
         "value": "main"
       },
       "resolved": {
-        "commit": "e9fcdf95b402d360f90f1db8d776d5dd450f9234",
-        "treeSha": "184d485ae68a2132893a94239b2b85d253e6152b"
+        "commit": "5b15a47f2d7150f545fbcacbfe381787fc0230dc",
+        "treeSha": "2242e8f05424b8c2ae94194a90d97b88d16108ec"
       },
       "target": "skills/productivity/collaboration/handoff",
-      "contentSha256": "sha256:5cc5c39b46c2851bc8ccf4dccd3d8f13c58e7e5576208e6fa31ed9089dfe3dc9",
-      "syncedAt": "2026-07-15T06:23:56.643Z",
+      "contentSha256": "sha256:4dbf63130b2a6774408142cb7c75e637ef3cc0e90ec4e26a6441437180c1d3ae",
+      "syncedAt": "2026-08-23T03:59:43.891Z",
       "riskFlags": [
         "mentions secret-bearing path"
       ]
@@ -48,12 +48,12 @@
         "value": "main"
       },
       "resolved": {
-        "commit": "e9fcdf95b402d360f90f1db8d776d5dd450f9234",
-        "treeSha": "c817f6f36acd483294144694a935a76d3e3eb101"
+        "commit": "5b15a47f2d7150f545fbcacbfe381787fc0230dc",
+        "treeSha": "3df14e2d3a89459bf300614be9247e3ce74798f8"
       },
       "target": "skills/productivity/feedback/grill-me",
-      "contentSha256": "sha256:f0816f0f60fa0116f1ef7ccf646df13526cc21bfb46aa8111302a3de2b4b2a0d",
-      "syncedAt": "2026-07-15T06:24:07.031Z",
+      "contentSha256": "sha256:be85c9a1dd1fb8fa38cffd3b8033c520754a785f2a24156d89b1590905658758",
+      "syncedAt": "2026-08-23T03:59:43.614Z",
       "riskFlags": []
     },
     "wrangler": {
@@ -120,12 +120,12 @@
         "value": "main"
       },
       "resolved": {
-        "commit": "a8552d7f447df0b6c901a70a4dde463aef43f521",
-        "treeSha": "e7818ff487738e13d692e44dbb9eeb799ac7e706"
+        "commit": "423e81fcc666c721f27c22be53086739d87d0f3e",
+        "treeSha": "1ee7e9dce1377a7038ab798e1ac5813ed608f4e1"
       },
       "target": "skills/platforms/lark/lark-shared",
-      "contentSha256": "sha256:f54733651f12233afdf69c75d78c8362fb8d0790c69426fdac69e697a64c5878",
-      "syncedAt": "2026-08-13T16:16:55.379Z",
+      "contentSha256": "sha256:72bff862a06095156e2cdfdbcc365397bceee718948beedcd8547439f90db604",
+      "syncedAt": "2026-08-23T03:59:53.207Z",
       "riskFlags": [
         "mentions secret-bearing path"
       ]
@@ -158,12 +158,12 @@
         "value": "main"
       },
       "resolved": {
-        "commit": "a8552d7f447df0b6c901a70a4dde463aef43f521",
-        "treeSha": "70c07bf3f9131197d1662093a84fb6dcc66a9db2"
+        "commit": "423e81fcc666c721f27c22be53086739d87d0f3e",
+        "treeSha": "6d6f6ec71996a0e50be0a5d52cc7689eeae71b0c"
       },
       "target": "skills/platforms/lark/lark-doc",
-      "contentSha256": "sha256:cc5b35f2b7d9348a7f106204ec4e751504bbb03e7f7b41fb042be53feb0ccc8c",
-      "syncedAt": "2026-08-13T16:19:16.967Z",
+      "contentSha256": "sha256:bd57a1f69e91b5ca555e520819ec07eb5891d68106c2a60885e3c6cf0818054a",
+      "syncedAt": "2026-08-23T03:59:48.064Z",
       "riskFlags": [
         "mentions secret-bearing path"
       ]
@@ -177,12 +177,12 @@
         "value": "main"
       },
       "resolved": {
-        "commit": "a8552d7f447df0b6c901a70a4dde463aef43f521",
-        "treeSha": "87d1f95bbfc6f3df9e416ca36a1b7d7a4c09fb83"
+        "commit": "423e81fcc666c721f27c22be53086739d87d0f3e",
+        "treeSha": "c9f0e85e6a7de36aef1b4f0c9036759365c98aaf"
       },
       "target": "skills/platforms/lark/lark-im",
-      "contentSha256": "sha256:c6bacb272b18b88db52ce6d58fcfe5f4599cc47502b0eae189994b9a2631b3e0",
-      "syncedAt": "2026-08-13T16:20:34.872Z",
+      "contentSha256": "sha256:d59c1dbbe52f03cc97b175bdeaea7d4a683fdb309e31eea5a3abebbfb7823a15",
+      "syncedAt": "2026-08-23T03:59:51.651Z",
       "riskFlags": [
         "mentions secret-bearing path"
       ]
@@ -213,12 +213,12 @@
         "value": "main"
       },
       "resolved": {
-        "commit": "a8552d7f447df0b6c901a70a4dde463aef43f521",
-        "treeSha": "69a4c7cd55aa419aa2f53f3cf5f328f4f50f58d5"
+        "commit": "423e81fcc666c721f27c22be53086739d87d0f3e",
+        "treeSha": "6485f7df7195ba5ef4d12e8be6b212894be0398a"
       },
       "target": "skills/platforms/lark/lark-drive",
-      "contentSha256": "sha256:9b371eabd3d0b13147a0cb1d3dee7d481323daf4bf1f8d11733ff6cb1def5324",
-      "syncedAt": "2026-08-13T16:42:11.853Z",
+      "contentSha256": "sha256:d632129d1bb5bfa17241c12e734b771f0f446e76c5a15ddbe8ea3f458d4c83ce",
+      "syncedAt": "2026-08-23T03:59:50.071Z",
       "riskFlags": [
         "mentions secret-bearing path"
       ]
