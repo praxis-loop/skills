@@ -1,3 +1,9 @@
+<p align="center">
+  <a href="./README.md">简体中文</a> ·
+  <a href="./README.en.md">English</a> ·
+  <a href="./README.ja.md">日本語</a>
+</p>
+
 # Cangjie Skill
 
 Distill a book into a set of executable AI skills.
