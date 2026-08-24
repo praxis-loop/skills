@@ -207,19 +207,25 @@ _tui_measure_labels() {
 # tui_select <mode> <title>
 #
 #   mode  multi | single
-#   输入   TUI_ITEMS[]  每项的标签
-#          TUI_NOTES[]  每项的旁白，用 \n 分段，段内自动折行
-#   输出   TUI_RESULT[] 选中项的下标
+#   输入   TUI_ITEMS[]      每项的标签
+#          TUI_NOTES[]      每项的旁白，用 \n 分段，段内自动折行
+#          TUI_PRECHECKED[] 可选，1 表示进入时已勾选
+#          TUI_ALERT[]      可选，1 表示该项标黄提醒
+#          TUI_DIFF         可选，multi 下设为 1 进入差异模式：
+#                           勾选框直接代表目标状态，用 [x]/[+]/[-]/[ ]
+#                           显示「保持/新增/移除/不装」，并统计增删数量
+#   输出   TUI_RESULT[]     确认时处于勾选状态的下标
 #
-# 返回 1 表示用户取消。
+# 返回 1 表示用户取消。调用方每次调用前应显式设置上面这些输入数组。
 tui_select() {
   local mode="$1" title="$2"
   local count="${#TUI_ITEMS[@]}"
   [ "$count" -gt 0 ] || return 1
 
-  local dim=$'\033[2m' bold=$'\033[1m' cyan=$'\033[36m' green=$'\033[32m' reset=$'\033[0m'
+  local dim=$'\033[2m' bold=$'\033[1m' cyan=$'\033[36m' green=$'\033[32m'
+  local yellow=$'\033[33m' red=$'\033[31m' reset=$'\033[0m'
   if [ -n "${NO_COLOR:-}" ]; then
-    dim=""; bold=""; cyan=""; green=""; reset=""
+    dim=""; bold=""; cyan=""; green=""; yellow=""; red=""; reset=""
   fi
 
   local cols rows
@@ -295,18 +301,33 @@ tui_select() {
     note_cnt[i]="$n"
   done
 
-  local -a checked=()
-  for i in "${!TUI_ITEMS[@]}"; do checked[i]=0; done
+  # base[] 是进入时的初始状态，用来算出「新增」和「移除」的差异
+  local -a checked=() base=()
+  for i in "${!TUI_ITEMS[@]}"; do
+    base[i]="${TUI_PRECHECKED[$i]:-0}"
+    checked[i]="${base[$i]}"
+  done
+
+  local diffmode=0
+  [ "$mode" = "multi" ] && [ "${TUI_DIFF:-0}" -eq 1 ] && diffmode=1
 
   local hint
-  if [ "$mode" = "multi" ]; then
+  if [ "$diffmode" -eq 1 ]; then
+    hint="↑↓/jk 移动   空格 切换   a 全选   n 清空   r 还原   回车 应用   q 取消"
+  elif [ "$mode" = "multi" ]; then
     hint="↑↓/jk 移动   空格 勾选   a 全选   n 清空   回车 确认   q 取消"
   else
     hint="↑↓/jk 移动   回车 选择   q 取消"
   fi
 
+  # 标题里常带着目标路径，窄终端下会撑出屏幕，按显示宽度截断
+  local disp_title disp_hint
+  disp_title="$(printf '0\t%s\n' "$title" | tui_trunc $((cols - margin)) | cut -f2-)"
+  disp_hint="$(printf '0\t%s\n' "$hint" | tui_trunc $((cols - margin)) | cut -f2-)"
+
   local head_lines=4
   local foot_lines=2
+  [ "$diffmode" -eq 1 ] && foot_lines=3
   local view=$((rows - head_lines - foot_lines))
   [ "$view" -lt 3 ] && view=3
   [ "$view" -gt "$count" ] && view="$count"
@@ -328,8 +349,8 @@ tui_select() {
     fi
 
     frame=$'\033[H'
-    frame+="  ${bold}${title}${reset}"$'\033[K\n'
-    frame+="  ${dim}${hint}${reset}"$'\033[K\n'
+    frame+="  ${bold}${disp_title}${reset}"$'\033[K\n'
+    frame+="  ${dim}${disp_hint}${reset}"$'\033[K\n'
     frame+=$'\033[K\n'
 
     local r
@@ -337,22 +358,32 @@ tui_select() {
       local li=$((top + r))
       local lcell=""
       if [ "$li" -lt "$count" ] && [ "$r" -lt "$view" ]; then
-        local point=" " mark=""
+        local point=" " mark="" mcolor="$dim"
         [ "$li" -eq "$cursor" ] && point="❯"
-        if [ "$mode" = "multi" ]; then
-          if [ "${checked[$li]}" -eq 1 ]; then mark="[x] "; else mark="[ ] "; fi
+        if [ "$diffmode" -eq 1 ]; then
+          if [ "${checked[$li]}" -eq 1 ] && [ "${base[$li]}" -eq 1 ]; then
+            mark="[x] "; mcolor="$green"
+          elif [ "${checked[$li]}" -eq 1 ]; then
+            mark="[+] "; mcolor="$yellow"
+          elif [ "${base[$li]}" -eq 1 ]; then
+            mark="[-] "; mcolor="$red"
+          else
+            mark="[ ] "; mcolor="$dim"
+          fi
+        elif [ "$mode" = "multi" ]; then
+          if [ "${checked[$li]}" -eq 1 ]; then mark="[x] "; mcolor="$green"; else mark="[ ] "; mcolor="$dim"; fi
         fi
         local pad=$((left - prefix_w - widths[li]))
         [ "$pad" -lt 0 ] && pad=0
         local label="${labels[$li]}"
+        local lcolor="" lend=""
+        if [ "${TUI_ALERT[$li]:-0}" -eq 1 ]; then lcolor="$yellow"; lend="$reset"; fi
         local spaces=""
         [ "$pad" -gt 0 ] && printf -v spaces '%*s' "$pad" ""
         if [ "$li" -eq "$cursor" ]; then
           lcell="${cyan}${point} ${mark}${label}${reset}${spaces}"
-        elif [ "$mode" = "multi" ] && [ "${checked[$li]}" -eq 1 ]; then
-          lcell="${point} ${green}${mark}${reset}${label}${spaces}"
         else
-          lcell="${point} ${dim}${mark}${reset}${label}${spaces}"
+          lcell="${point} ${mcolor}${mark}${reset}${lcolor}${label}${lend}${spaces}"
         fi
       else
         printf -v lcell '%*s' "$left" ""
@@ -388,9 +419,18 @@ tui_select() {
 
     frame+=$'\033[K\n'
     if [ "$mode" = "multi" ]; then
-      local picked=0
-      for i in "${!checked[@]}"; do [ "${checked[$i]}" -eq 1 ] && picked=$((picked + 1)); done
-      frame+="  ${dim}已选 ${picked}/${count}${reset}"$'\033[K\n'
+      local picked=0 added=0 removed=0
+      for i in "${!checked[@]}"; do
+        [ "${checked[$i]}" -eq 1 ] && picked=$((picked + 1))
+        if [ "${checked[$i]}" -eq 1 ] && [ "${base[$i]}" -eq 0 ]; then added=$((added + 1)); fi
+        if [ "${checked[$i]}" -eq 0 ] && [ "${base[$i]}" -eq 1 ]; then removed=$((removed + 1)); fi
+      done
+      if [ "$diffmode" -eq 1 ]; then
+        frame+="  ${dim}已选 ${picked}/${count}   将新增 ${yellow}${added}${dim} 个、移除 ${red}${removed}${dim} 个${reset}"$'\033[K\n'
+        frame+="  ${green}[x]${reset}${dim} 已装   ${yellow}[+]${reset}${dim} 将新增   ${red}[-]${reset}${dim} 将移除   [ ] 未装${reset}"$'\033[K\n'
+      else
+        frame+="  ${dim}已选 ${picked}/${count}${reset}"$'\033[K\n'
+      fi
     fi
     frame+=$'\033[J'
     printf '%s' "$frame" >&2
@@ -418,14 +458,22 @@ tui_select() {
           for i in "${!checked[@]}"; do checked[i]=0; done
         fi
         ;;
+      r | R)
+        if [ "$diffmode" -eq 1 ]; then
+          for i in "${!checked[@]}"; do checked[i]="${base[$i]}"; done
+        fi
+        ;;
       "" | $'\r' | $'\n')
         TUI_RESULT=()
         if [ "$mode" = "single" ]; then
           TUI_RESULT=("$cursor")
         else
           for i in "${!checked[@]}"; do [ "${checked[$i]}" -eq 1 ] && TUI_RESULT+=("$i"); done
-          # 一个都没勾时，把光标所在项当作选中，避免空确认
-          [ "${#TUI_RESULT[@]}" -eq 0 ] && TUI_RESULT=("$cursor")
+          # 普通多选下一个都没勾时，把光标所在项当作选中，避免空确认。
+          # diff 模式下「全都不勾」是合法意图（表示全部移除），不能替用户改。
+          if [ "$diffmode" -eq 0 ] && [ "${#TUI_RESULT[@]}" -eq 0 ]; then
+            TUI_RESULT=("$cursor")
+          fi
         fi
         _tui_restore
         trap - EXIT INT TERM

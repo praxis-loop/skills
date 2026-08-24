@@ -78,6 +78,9 @@ target_note() {
 prompt_target_dir_tui() {
   TUI_ITEMS=()
   TUI_NOTES=()
+  TUI_PRECHECKED=()
+  TUI_ALERT=()
+  TUI_DIFF=0
   local i
   for i in 0 1 2 3; do
     TUI_ITEMS+=("${TARGET_LABELS[$i]}")
@@ -102,6 +105,55 @@ prompt_target_dir_plain() {
   target_dir_for_choice "${target_choice:-}"
 }
 
+abs_path() {
+  local p="$1"
+  if [ -d "$p" ]; then
+    (cd "$p" && pwd -P)
+  else
+    printf '%s\n' "$p"
+  fi
+}
+
+# link_state <链接路径> <本仓库里的 skill 目录>
+#   linked  已经指向本仓库这个 skill
+#   foreign 位置被占用：真实目录，或指向别处的软链接
+#   none    位置是空的
+link_state() {
+  local link="$1" source_dir="$2" dest
+
+  if [ -L "$link" ]; then
+    dest="$(readlink "$link")"
+    case "$dest" in
+      /*) : ;;
+      *) dest="$(dirname "$link")/$dest" ;;
+    esac
+    if [ "$(abs_path "$dest")" = "$(abs_path "$source_dir")" ]; then
+      printf 'linked\n'
+    else
+      printf 'foreign\n'
+    fi
+    return
+  fi
+
+  if [ -e "$link" ]; then
+    printf 'foreign\n'
+  else
+    printf 'none\n'
+  fi
+}
+
+remove_link() {
+  local display="$1" link_path="$2"
+
+  if [ ! -L "$link_path" ]; then
+    echo "跳过移除：$link_path 不是软链接"
+    return
+  fi
+
+  rm -f "$link_path"
+  echo "已移除：$link_path"
+}
+
 install_link() {
   local display="$1"
   local source_dir="$2"
@@ -116,17 +168,22 @@ install_link() {
 
   mkdir -p "$target_dir"
 
-  if [ -L "$link_path" ]; then
-    ln -sfn "$source_dir" "$link_path"
-    echo "已更新软链接：$link_path -> $source_dir"
-    return
-  fi
-
-  if [ -e "$link_path" ]; then
-    echo "目标已存在且不是软链接，跳过：$link_path"
-    echo "如需覆盖，请先手动移动或删除该目录。"
-    return
-  fi
+  case "$(link_state "$link_path" "$source_dir")" in
+    linked)
+      echo "已是最新：$link_path"
+      return
+      ;;
+    foreign)
+      if [ -L "$link_path" ]; then
+        ln -sfn "$source_dir" "$link_path"
+        echo "已改指向本仓库：$link_path -> $source_dir"
+      else
+        echo "目标已存在且不是软链接，跳过：$link_path"
+        echo "如需覆盖，请先手动移动或删除该目录。"
+      fi
+      return
+      ;;
+  esac
 
   ln -s "$source_dir" "$link_path"
   echo "已安装：$link_path -> $source_dir"
@@ -147,46 +204,80 @@ for i in "${!RECORDS[@]}"; do
   SUMMARIES[i]="$(skill_summary "$skill_name" "$source_dir")"
 done
 
-declare -a SELECTED=()
+# 安装状态取决于目标目录，所以先定目标，再带着状态列 skill
+if tui_supported; then
+  TARGET_DIR="$(prompt_target_dir_tui)"
+else
+  TARGET_DIR="$(prompt_target_dir_plain)"
+fi
+
+declare -a STATES=()
+for i in "${!RECORDS[@]}"; do
+  IFS='|' read -r display source_dir skill_name function_name domain_name <<< "${RECORDS[$i]}"
+  STATES[i]="$(link_state "$TARGET_DIR/$skill_name" "$source_dir")"
+done
+
+declare -a TO_INSTALL=() TO_REMOVE=()
 
 if tui_supported; then
   TUI_ITEMS=()
   TUI_NOTES=()
+  TUI_PRECHECKED=()
+  TUI_ALERT=()
+  TUI_DIFF=1
   for i in "${!RECORDS[@]}"; do
     IFS='|' read -r display source_dir skill_name function_name domain_name <<< "${RECORDS[$i]}"
+    case "${STATES[$i]}" in
+      linked) state_text="当前：已安装"; TUI_PRECHECKED+=(1); TUI_ALERT+=(0) ;;
+      foreign) state_text="当前：目标位置被别的内容占用，勾选会覆盖"; TUI_PRECHECKED+=(0); TUI_ALERT+=(1) ;;
+      *) state_text="当前：未安装"; TUI_PRECHECKED+=(0); TUI_ALERT+=(0) ;;
+    esac
     TUI_ITEMS+=("$display")
-    TUI_NOTES+=("$(printf '%s\n%s · %s\n\n%s\n' \
+    TUI_NOTES+=("$(printf '%s\n%s · %s · %s\n\n%s\n' \
       "$skill_name" \
       "$domain_name" \
       "$(skill_origin "$skill_name")" \
+      "$state_text" \
       "${SUMMARIES[$i]}")")
   done
 
-  if ! tui_select multi "选择要安装的 skill"; then
+  if ! tui_select multi "选择要安装的 skill   目标：${TARGET_DIR/#$HOME/~}"; then
     echo "已取消。" >&2
     exit 1
   fi
 
-  for i in "${TUI_RESULT[@]}"; do
-    SELECTED+=("${RECORDS[$i]}")
-  done
+  declare -a WANTED=()
+  for i in "${!RECORDS[@]}"; do WANTED[i]=0; done
+  for i in "${TUI_RESULT[@]}"; do WANTED[i]=1; done
 
-  TARGET_DIR="$(prompt_target_dir_tui)"
+  for i in "${!RECORDS[@]}"; do
+    if [ "${WANTED[$i]}" -eq 1 ]; then
+      TO_INSTALL+=("${RECORDS[$i]}")
+    elif [ "${STATES[$i]}" = "linked" ]; then
+      TO_REMOVE+=("${RECORDS[$i]}")
+    fi
+  done
 else
-  echo "发现以下 skill："
+  echo
+  echo "安装目标：$TARGET_DIR"
+  echo "发现以下 skill（[已装] 表示该目标目录下已链接到本仓库）："
   for i in "${!RECORDS[@]}"; do
     IFS='|' read -r display source_dir skill_name function_name domain_name <<< "${RECORDS[$i]}"
-    printf "  %d) %s\n" "$((i + 1))" "$display"
+    case "${STATES[$i]}" in
+      linked) badge=" [已装]" ;;
+      foreign) badge=" [位置被占用]" ;;
+      *) badge="" ;;
+    esac
+    printf "  %d) %s%s\n" "$((i + 1))" "$display" "$badge"
     printf "       %s\n" "${SUMMARIES[$i]}"
   done
   echo "  a) 全部安装"
+  echo "（非交互模式只做安装，移除请用 scripts/uninstall.sh）"
 
   read -r -p "请选择要安装的 skill（例如 1,3 或 a）: " selection
 
-  TARGET_DIR="$(prompt_target_dir_plain)"
-
   if [ "$selection" = "a" ] || [ "$selection" = "A" ]; then
-    SELECTED=("${RECORDS[@]}")
+    TO_INSTALL=("${RECORDS[@]}")
   else
     IFS=',' read -ra PARTS <<< "$selection"
     for part in "${PARTS[@]}"; do
@@ -200,17 +291,39 @@ else
         echo "选择超出范围：$part" >&2
         exit 1
       fi
-      SELECTED+=("${RECORDS[$idx]}")
+      TO_INSTALL+=("${RECORDS[$idx]}")
     done
+  fi
+fi
+
+if [ "${#TO_REMOVE[@]}" -gt 0 ]; then
+  echo
+  echo "以下 skill 取消了勾选，将从 $TARGET_DIR 移除软链接："
+  for record in "${TO_REMOVE[@]}"; do
+    IFS='|' read -r display source_dir skill_name function_name domain_name <<< "$record"
+    echo "  - $skill_name"
+  done
+  read -r -p "确认移除？[y/N]: " confirm_remove
+  if ! [[ "${confirm_remove:-}" =~ ^[yY]$ ]]; then
+    echo "跳过移除，只执行安装。"
+    TO_REMOVE=()
   fi
 fi
 
 echo
 echo "安装目标：$TARGET_DIR"
-for record in "${SELECTED[@]}"; do
+for record in "${TO_INSTALL[@]}"; do
   IFS='|' read -r display source_dir skill_name function_name domain_name <<< "$record"
   install_link "$display" "$source_dir" "$skill_name" "$TARGET_DIR"
 done
+for record in "${TO_REMOVE[@]}"; do
+  IFS='|' read -r display source_dir skill_name function_name domain_name <<< "$record"
+  remove_link "$display" "$TARGET_DIR/$skill_name"
+done
+
+if [ "${#TO_INSTALL[@]}" -eq 0 ] && [ "${#TO_REMOVE[@]}" -eq 0 ]; then
+  echo "没有需要变更的内容。"
+fi
 
 echo
 echo "完成。若 CLI 没有立即识别新 skill，请重启对应 CLI。"
