@@ -42,11 +42,17 @@ Linux、macOS、WSL：
 bash scripts/install.sh
 ```
 
+在终端里会进入交互式选择：`↑↓` 移动，空格勾选，`a` 全选，`n` 清空，回车确认，`q` 取消。右侧面板显示当前光标所在 skill 的分类、来源和一句话简介，简介取自 [docs/CATEGORIES.md](docs/CATEGORIES.md) 的说明列，缺失时回退到 `SKILL.md` 里 `description` 的第一句。
+
+管道、CI 或 `NO_TUI=1` 下自动退回编号输入模式。
+
 Windows PowerShell：
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\install.ps1
 ```
+
+PowerShell 版本仍是编号输入，没有交互式面板。
 
 ## 更新与检查
 
