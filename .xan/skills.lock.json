@@ -10,12 +10,12 @@
         "value": "main"
       },
       "resolved": {
-        "commit": "a47a604b3940eda9bb0c83a276626ffa0c87d7e5",
-        "treeSha": "f6d87de579dbd6762ab5504b8afafd12ef9d76e5"
+        "commit": "f751bf9ff9f833cff702fe48d31ebd9d407d4b05",
+        "treeSha": "616162e791ee567f6e817302ca9a285f206f436a"
       },
       "target": "skills/productivity/reading/cangjie-skill",
-      "contentSha256": "sha256:38c4066a8a5172c4e0d150803c283ed67898377362d507fd9d8c971002da7fd8",
-      "syncedAt": "2026-08-24T04:04:24.252Z",
+      "contentSha256": "sha256:953feb3eabe9f916afab2e8ade4d3dfb9948369ead9371af5a287eef0401061b",
+      "syncedAt": "2026-08-26T04:02:18.289Z",
       "riskFlags": [
         "contains executable helper scripts"
       ]
@@ -177,12 +177,12 @@
         "value": "main"
       },
       "resolved": {
-        "commit": "423e81fcc666c721f27c22be53086739d87d0f3e",
-        "treeSha": "c9f0e85e6a7de36aef1b4f0c9036759365c98aaf"
+        "commit": "0f9553385c48234ab7e16ab4c9b08c745f1c59d4",
+        "treeSha": "45252c37c2fc10eead2421fdbac3813bdeee81b8"
       },
       "target": "skills/platforms/lark/lark-im",
-      "contentSha256": "sha256:d59c1dbbe52f03cc97b175bdeaea7d4a683fdb309e31eea5a3abebbfb7823a15",
-      "syncedAt": "2026-08-23T03:59:51.651Z",
+      "contentSha256": "sha256:86741671b9908db2253747b6a7c05af21c87d6e4c4d98798f4b0b08cd0fd6129",
+      "syncedAt": "2026-08-26T04:02:25.500Z",
       "riskFlags": [
         "mentions secret-bearing path"
       ]
@@ -213,12 +213,12 @@
         "value": "main"
       },
       "resolved": {
-        "commit": "423e81fcc666c721f27c22be53086739d87d0f3e",
-        "treeSha": "6485f7df7195ba5ef4d12e8be6b212894be0398a"
+        "commit": "0f9553385c48234ab7e16ab4c9b08c745f1c59d4",
+        "treeSha": "8874f9bc3e01ba6d7f849cdc1586d3df7e96cc6b"
       },
       "target": "skills/platforms/lark/lark-drive",
-      "contentSha256": "sha256:d632129d1bb5bfa17241c12e734b771f0f446e76c5a15ddbe8ea3f458d4c83ce",
-      "syncedAt": "2026-08-23T03:59:50.071Z",
+      "contentSha256": "sha256:c5c74e5f5dfe670acc345b6f7f980058b793119f6546f6792239bda9c3a28354",
+      "syncedAt": "2026-08-26T04:02:23.941Z",
       "riskFlags": [
         "mentions secret-bearing path"
       ]
@@ -232,12 +232,12 @@
         "value": "main"
       },
       "resolved": {
-        "commit": "a8552d7f447df0b6c901a70a4dde463aef43f521",
-        "treeSha": "97a53977beb2218d27ae04586e79dbc84ebf63be"
+        "commit": "0f9553385c48234ab7e16ab4c9b08c745f1c59d4",
+        "treeSha": "76a9016ae432f8ded7bc6d321e323714ffde0e3b"
       },
       "target": "skills/platforms/lark/lark-sheets",
-      "contentSha256": "sha256:3180b9ac9a311ada4957725c521ec19a32b6a3cdd860ef03199f1092fc55d10e",
-      "syncedAt": "2026-08-14T05:01:10.467Z",
+      "contentSha256": "sha256:7c5a03eafc2e4a70218afc602b438778ae7562d03bfff97db68499e3121e02b0",
+      "syncedAt": "2026-08-26T04:02:28.616Z",
       "riskFlags": [
         "mentions secret-bearing path",
         "contains executable helper scripts"

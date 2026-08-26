@@ -1,6 +1,6 @@
 <p align="center">
-  <a href="./README.md">简体中文</a> ·
-  <a href="./README.en.md">English</a> ·
+  <a href="./README.zh-CN.md">简体中文</a> ·
+  <a href="./README.md">English</a> ·
   <a href="./README.ja.md">日本語</a>
 </p>
 
@@ -122,10 +122,10 @@ RIA-TV++ の名前の由来：
 
 ```text
 cangjie-skill/
-├── README.md              ← 今見ているファイル
-├── README.en.md           ← 英語版
+├── README.md              ← 英語版（デフォルト）
+├── README.zh-CN.md        ← 簡体中文版
 ├── README.ja.md           ← 日本語版
-├── LICENSE                ← GNU AGPL v3.0
+├── LICENSE                ← MIT License
 ├── SKILL.md               ← メタスキル定義（cangjie-skill の完全な実行仕様）
 ├── methodology/           ← RIA-TV++ の段階別方法論ドキュメント
 ├── extractors/            ← 5つの並行エクストラクターのプロンプト定義
@@ -200,4 +200,4 @@ WeChat 公式アカウント「袋鼠帝 AI 客栈」QR コード:
 
 ## License
 
-GNU Affero General Public License v3.0. See [LICENSE](./LICENSE).
+MIT License. See [LICENSE](./LICENSE).
