@@ -10,12 +10,12 @@
         "value": "main"
       },
       "resolved": {
-        "commit": "f751bf9ff9f833cff702fe48d31ebd9d407d4b05",
-        "treeSha": "616162e791ee567f6e817302ca9a285f206f436a"
+        "commit": "5f03a4cd8b521673f7a67ca6279330ec943bb369",
+        "treeSha": "200c75f96adc9509ed92b9b979b1137db785dbc0"
       },
       "target": "skills/productivity/reading/cangjie-skill",
-      "contentSha256": "sha256:953feb3eabe9f916afab2e8ade4d3dfb9948369ead9371af5a287eef0401061b",
-      "syncedAt": "2026-08-26T04:02:18.289Z",
+      "contentSha256": "sha256:81be2d9ef620129c1b75359dede014ad00ff6cc40b001cd648550c2be82aec0a",
+      "syncedAt": "2026-08-27T14:11:11.888Z",
       "riskFlags": [
         "contains executable helper scripts"
       ]
@@ -139,12 +139,12 @@
         "value": "main"
       },
       "resolved": {
-        "commit": "35bd5ecfcd84c8e457323a1bcf9453ba600c0270",
-        "treeSha": "a07484e1b9b0deadfcc409c154175b375c484ffe"
+        "commit": "62eae360086a7bda397fbc686155a26512745b8a",
+        "treeSha": "502f5f4268b74db93d0028a2de18fa5fc2aa2d53"
       },
       "target": "skills/platforms/lark/lark-base",
-      "contentSha256": "sha256:152d04d1b73f304bb9d182cf9afadc63e0de846702f37b24b24dfb720fd05b4e",
-      "syncedAt": "2026-08-25T03:58:45.863Z",
+      "contentSha256": "sha256:8849b43e666d33fd84baf5b2ae67a421c0df225fc3a4ad462e657993ddeaefbf",
+      "syncedAt": "2026-08-27T14:11:15.025Z",
       "riskFlags": [
         "mentions secret-bearing path"
       ]
@@ -177,12 +177,12 @@
         "value": "main"
       },
       "resolved": {
-        "commit": "0f9553385c48234ab7e16ab4c9b08c745f1c59d4",
-        "treeSha": "45252c37c2fc10eead2421fdbac3813bdeee81b8"
+        "commit": "62eae360086a7bda397fbc686155a26512745b8a",
+        "treeSha": "6955f8ad5fa2a51dd0d9c4b89fcde0e3117de9b3"
       },
       "target": "skills/platforms/lark/lark-im",
-      "contentSha256": "sha256:86741671b9908db2253747b6a7c05af21c87d6e4c4d98798f4b0b08cd0fd6129",
-      "syncedAt": "2026-08-26T04:02:25.500Z",
+      "contentSha256": "sha256:99bdfd7e4b68011d71b372d361b70c7927fb2eee4d0179c4586ff8628197723d",
+      "syncedAt": "2026-08-27T14:11:21.915Z",
       "riskFlags": [
         "mentions secret-bearing path"
       ]
