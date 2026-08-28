@@ -74,11 +74,13 @@ python3 scripts/fetch_mm_day.py --out <工作目录> [--date YYYY-MM-DD]
 
 ### 5. 写入 daily.md
 
-目标文件（Obsidian 库，Windows 侧 `D:\obsidian\xan\WorkLog\Oazon\daily.md`）：
+目标文件（Obsidian 库，Windows 侧 `D:\obsidian\xnote\WorkLog\Oazon\daily.md`）：
 
 ```
-/mnt/d/obsidian/xan/WorkLog/Oazon/daily.md
+/mnt/d/obsidian/xnote/WorkLog/Oazon/daily.md
 ```
+
+路径不存在就是库又改名了，用 `find /mnt/d/obsidian -maxdepth 4 -iname daily.md` 定位，别拿 `WorkLog/DigiFinance/daily.md` 那份。
 
 **顺序不能颠倒：先备份 → 生成 diff → 用户确认 → 才写入。** 格式约定与逐条落点见 `references/daily-md.md`。
 

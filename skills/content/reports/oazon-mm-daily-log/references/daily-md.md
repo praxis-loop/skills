@@ -14,10 +14,12 @@
 
 | 侧 | 路径 |
 |---|---|
-| Windows | `D:\obsidian\xan\WorkLog\Oazon\daily.md` |
-| WSL（实际操作用这个） | `/mnt/d/obsidian/xan/WorkLog/Oazon/daily.md` |
+| Windows | `D:\obsidian\xnote\WorkLog\Oazon\daily.md` |
+| WSL（实际操作用这个） | `/mnt/d/obsidian/xnote/WorkLog/Oazon/daily.md` |
 
-文件约 2700 行、100KB，从 2025-05 一路记到现在。**行尾是 LF，不是 CRLF**——虽然在 Windows 盘上。写入时别引入 `\r`，用 `file <target>` 确认结果仍是 `UTF-8 text` 而不是 `with CRLF line terminators`。
+库根目录 2026-08 前叫 `xan`，现已改名 `xnote`。**库还可能再改名**——`No such file or directory` 时别猜，直接 `find /mnt/d/obsidian -maxdepth 4 -iname daily.md` 定位，并注意同名的 `WorkLog/DigiFinance/daily.md` 是另一份，别写错。
+
+文件约 2800 行、110KB，从 2025-05 一路记到现在。**行尾是 LF，不是 CRLF**——虽然在 Windows 盘上。写入时别引入 `\r`，用 `file <target>` 确认结果仍是 `UTF-8 text` 而不是 `with CRLF line terminators`。
 
 ## 文件结构
 
