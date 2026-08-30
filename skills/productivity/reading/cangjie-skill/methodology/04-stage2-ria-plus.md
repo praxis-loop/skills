@@ -1,10 +1,18 @@
-# 阶段 2 — RIA++ 构造 skill
+# 阶段 2 — RIA++ 构造能力卡
 
 ## 目标
 
-把阶段 1.5 通过的每个方法论单元,构造成一个符合 Claude Code skill 规范的 SKILL.md。
+把阶段 1.5 通过的每个方法论单元,构造成一张 RIA 能力卡,并在 Capability Bundle 中登记。
 
-使用模板: `templates/SKILL.md.template`
+**v2.1 产出位置（ADR-002）**:
+- 能力卡正文（R/I/A1/A2/E/B 六段,**不带 frontmatter**）→ `books/<slug>/.cangjie/capabilities/cards/<slug>.md`
+- 能力元数据（稳定 `capability_id`、intents、keywords、one_liner、importance + 依据、`frontmatter.description`）→ `verified.yaml` 中该能力的条目（schema: `schemas/capability-bundle.schema.json`）
+
+最终的 SKILL.md 由 `scripts/cangjie.py compile` 从 Bundle 确定性编译,阶段 2 不再直接写最终 Skill 目录。
+旧流程（直接按 `templates/SKILL.md.template` 写独立 Skill 目录）仍受支持,产物按 legacy-pack 处理,
+迁移方法见 `docs/migrations/v2.0-to-v2.1.md`。
+
+内容结构参考模板: `templates/SKILL.md.template`（六段定义不变）
 
 ## RIA++ 六段
 
@@ -67,19 +75,31 @@ E 的作用是让 agent 在调用这个 skill 时有明确的执行路径,不是
 
 B 的作用是**防止乱调用**。没有 B 的 skill,会在不该用的时候被用,反而帮倒忙。
 
-## Frontmatter 设计
+## 能力元数据设计（登记进 verified.yaml,不写在卡片里）
 
 ```yaml
----
-name: <skill-slug>                    # kebab-case, 唯一
-description: |                        # A2 的浓缩版, ≤300 字
-  <何时用 + 何时不用 + 关键 trigger>
-source_book: 《穷查理宝典》 查理·芒格
-source_chapter: 第三讲
-tags: [decision, mental-model, cognitive-bias]
-related_skills: []                    # 阶段 3 填充
----
+capability_id: cap.<book>.<slug>      # 稳定 ID: 文案润色只加 revision,语义拆分/合并才换 ID
+revision: 1
+status: active
+slug: <skill-slug>                    # kebab-case, 唯一
+title: <中文标题>
+importance: critical|high|medium|low  # 必须附 importance_rationale（引用图入度/篇幅占比/任务命中）
+one_liner: <一句话决策规则>            # 进入 cheatsheet
+intents: [<用户意图>...]               # 进入路由表
+keywords: [<中英关键词>...]
+also_read: []                         # 阶段 3 填充
+card: cards/<slug>.md
+frontmatter:
+  description: |                      # A2 的浓缩版, ≤300 字;晋级 Skill 编译时用作 description
+    <何时用 + 何时不用 + 关键 trigger>
+  tags: [decision, mental-model]
+source_evidence:
+  - source_id: src-main-book
+    location: 第三讲                   # 视频填时间戳/分 P
 ```
+
+来源信息（source_book/source_chapter）由 `source_evidence` 承载;编译器把它们放进
+`metadata.cangjie.*`,不再作为顶层 frontmatter 字段（Agent Skills 规范兼容,方案 §11.1）。
 
 ## 常见失败模式
 

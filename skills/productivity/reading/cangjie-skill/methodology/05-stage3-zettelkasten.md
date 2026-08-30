@@ -15,28 +15,24 @@
 3. **组合 (composes-with)**: A 和 B 经常配合使用
    - 例: "能力圈判断" 组合 "安全边际"
 
-## 执行步骤
+## 执行步骤（v2.1 Bundle 版）
 
-1. 列出阶段 2 产出的所有 skill
+1. 列出阶段 2 登记进 Capability Bundle 的所有能力
 2. 两两扫描,识别是否存在上述三类关系
-3. 在每个 skill 的 frontmatter `related_skills` 字段填入:
-   ```yaml
-   related_skills:
-     - slug: multi-mental-models
-       relation: depends-on
-     - slug: forward-reasoning
-       relation: contrasts-with
-   ```
-4. 在每个 skill 的 SKILL.md 末尾追加"相关 skills"段,用自然语言说明关系
-5. **回填 A2**: 链接关系确定后,回到每个 skill 的 A2 段,把阶段 2 留下的"与相邻 skill 的区分"初稿改成定稿 (同时同步 frontmatter `description`)
-6. 生成 `books/<slug>/INDEX.md` (模板 `templates/INDEX.md.template`)
-7. 把 `candidates/glossary.md` 整理提升为 `books/<slug>/GLOSSARY.md` — 它是所有 skill 共享的术语词典,应在产出根目录可见,而不是埋在审计目录里; INDEX.md 中链接它
+3. 把关系写入 `verified.yaml` 中各能力的 `also_read` 字段（能力卡编译时生成"补读"列）;
+   依赖/对比/组合的语义说明写在能力卡末尾的"相关能力"段
+4. **回填 A2**: 链接关系确定后,回到每张能力卡的 A2 段,把阶段 2 留下的"与相邻能力的区分"
+   初稿改成定稿 (同时同步 Bundle 中该能力的 `frontmatter.description`)
+5. 把 `candidates/glossary.md` 整理提升为 `books/<slug>/GLOSSARY.md`,并复制到
+   `.cangjie/capabilities/book/glossary.md`（编译时随产物分发）
+6. 路由表 / 能力索引（capability-index.md）由 `cangjie.py compile` 从 Bundle 自动生成,
+   **不再手写 INDEX.md**;legacy-pack 流程仍可用 `templates/INDEX.md.template`
 
-## INDEX.md 必须包含
+## 编译生成的能力索引必须包含
 
 - 书的基本信息 (作者/年份/一句话主旨)
-- 所有 skill 的列表,按主题分组
-- 引用图 (mermaid flowchart 或 graph)
+- 所有能力的列表,按主题分组
+- 意图/关键词 → 能力卡的映射
 - 推荐学习顺序 (从依赖关系推出)
 
 ## 节制原则

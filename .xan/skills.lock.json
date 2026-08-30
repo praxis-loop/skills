@@ -10,12 +10,12 @@
         "value": "main"
       },
       "resolved": {
-        "commit": "b633a4fad5a02f0fc6b2524d1ddf3ed50c753a40",
-        "treeSha": "88c94e813b4efd1433af5dbc2aa7339fd304da8b"
+        "commit": "44692125abcdb93eab7b0e7a5ecd6ccadf92dc6f",
+        "treeSha": "a7bccbd16412a56bfe0a843969311a4d338078a0"
       },
       "target": "skills/productivity/reading/cangjie-skill",
-      "contentSha256": "sha256:d3a939b163b60af2ed39cda8ecd62bb0c32b6b277593d3b6063e96ad0c70946c",
-      "syncedAt": "2026-08-28T15:21:21.999Z",
+      "contentSha256": "sha256:ffc62a1f9a8de70e7a5e4eb9ae15d860a50839fcc9de8f644e1f3fd478643da9",
+      "syncedAt": "2026-08-30T09:13:13.570Z",
       "riskFlags": [
         "contains executable helper scripts"
       ]

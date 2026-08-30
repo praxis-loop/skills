@@ -11,6 +11,7 @@
 ### 把书、长视频、播客里的方法论，蒸馏成可调用的 AI Skills
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE)
+[![Version: 2.5.0](https://img.shields.io/badge/Version-2.5.0-8b5cf6.svg)](./CHANGELOG.md)
 [![Method: RIA--TV++](https://img.shields.io/badge/Method-RIA--TV++-2ea44f.svg)](./SKILL.md)
 [![Platform: OpenClaw](https://img.shields.io/badge/Platform-OpenClaw-1677ff.svg)](https://github.com/openclaw/openclaw)
 [![Platform: Claude Code](https://img.shields.io/badge/Platform-Claude%20Code-f97316.svg)](https://code.claude.com/)
@@ -25,6 +26,16 @@
 🌐 [访问 Cangjie Skill 官方网站](https://cangjie-skill.com/)
 
 官网提供 Skill Packs 可视化浏览、从零开始的使用教程、Skill 详情与生态共建提交入口。GitHub 仓库仍是 cangjie-skill 代码、方法论和模板的唯一来源，官网负责展示、导航与使用指引。
+
+## v2.5.0 更新重点
+
+- **Capability Bundle 成为唯一事实源**：先生成稳定的能力卡和元数据，再编译安装产物。
+- **两种确定性交付模式**：可编译为单路由入口（`single`），或「路由入口 + 少量晋级独立 Skill」的紧凑包（`pack`）。
+- **统一本地工具链**：`scripts/cangjie.py` 覆盖诊断、编译、输出重规划、增量更新、修复、回滚、评测和基准测试。
+- **更安全的演进机制**：包含内容寻址预处理、源文档 diff、影响分析、事务性补丁、手改检测、快照和回滚。
+- **Registry v2 与官网支持**：可展示输出模式和能力数量，同时保持对 Registry v1 条目的兼容。
+
+完整范围、兼容性和验证方式见 [v2.5.0 发布说明](./docs/releases/v2.5.0.md) 与 [Changelog](./CHANGELOG.md)。
 
 ## DeepSeek Harness 插件
 
@@ -69,15 +80,15 @@ dsh web
 
 ## 它是怎么工作的
 
-cangjie-skill 使用 **RIA-TV++** 流水线，把书籍、视频转写、播客文字稿、访谈记录等原始文本变成一组结构化的 skill。整个过程分七个阶段：
+cangjie-skill 使用 **RIA-TV++** 流水线，先把书籍、视频转写、播客文字稿、访谈记录等原始文本变成可复用的 Capability Bundle，再编译为可安装的 skill。整个过程分七个阶段：
 
 1. **整体内容理解（Adler 分析）**——借鉴 Mortimer Adler 的分析阅读法，对整份内容做结构、解释、批判、应用四步拆解，产出 `BOOK_OVERVIEW.md`
 2. **并行提取**——同时派 5 个专项提取器（框架、原则、案例、反例、术语），从原文中提取候选方法论单元
-3. **三重验证筛选**——每个候选必须通过三项检验：原内容中至少有 2 处独立佐证（跨域）、能回答内容里未明说的新问题（预测力）、不是常识（独特性）。通过率通常只有 25-50%
-4. **RIA++ 构造**——将验证通过的内容按 R（原文引用）/ I（用自己的话重写）/ A1（书中案例）/ A2（未来触发场景）/ E（可执行步骤）/ B（边界与盲点）六个维度结构化
-5. **Zettelkasten 链接**——找出 skill 之间的依赖、对比、组合关系，生成 `INDEX.md` 和引用图
+3. **三重验证 + 晋级门**——候选先通过证据检验，再只在使用价值足以覆盖路由成本时晋级为独立入口
+4. **RIA++ 能力卡构造**——将验证通过的内容按 R / I / A1 / A2 / E / B 写入 `.cangjie/capabilities/`
+5. **Zettelkasten 链接**——将依赖、对比和组合关系写入 Bundle 的能力图和共享术语表
 6. **压力测试**——为每个 skill 设计包含诱饵题的测试用例（含跨 skill 混淆测试），未通过的回炉重做
-7. **交付**——生成面向读者的 `DIGEST.md` 精华长文（不想读全书？看这篇就够），并把通过测试的 skill 安装到 Claude Code / Cursor 的 skills 目录，让它们真正可被调用
+7. **确定性编译与交付**——同一份 Bundle 可编译为 `single` 或紧凑 `pack`，同时交付 `DIGEST.md`、校验结果和可安装产物
 
 RIA-TV++ 这个名字拆开看：
 - **RIA**：来自赵周《这样读书就够了》的便签拆书法（Reading / Interpretation / Appropriation）
