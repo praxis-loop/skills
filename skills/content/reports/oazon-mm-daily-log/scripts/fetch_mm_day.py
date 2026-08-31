@@ -27,9 +27,11 @@ import argparse
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 from datetime import datetime, timedelta, timezone
+from pathlib import Path
 
 DEFAULT_SERVER = "https://mm.oazon.com"
 DEFAULT_TZ_OFFSET = 8  # Asia/Shanghai
@@ -48,6 +50,50 @@ NOISE_PREFIXES = (
 # opencli 调用
 # --------------------------------------------------------------------------- #
 
+def resolve_opencli_command(
+    os_name: str | None = None,
+    which=shutil.which,
+) -> list[str]:
+    """返回可由 subprocess 直接执行的 OpenCLI 命令前缀。"""
+    current_os = os_name or os.name
+    if current_os != "nt":
+        executable = which("opencli")
+        if not executable:
+            raise RuntimeError("PATH 中找不到 opencli")
+        return [executable]
+
+    node = which("node")
+    shim = which("opencli.cmd") or which("opencli")
+    if not node or not shim:
+        raise RuntimeError("Windows 下找不到 node 或 opencli.cmd")
+
+    entry = (
+        Path(shim).resolve().parent
+        / "node_modules"
+        / "@jackwener"
+        / "opencli"
+        / "dist"
+        / "src"
+        / "main.js"
+    )
+    if not entry.is_file():
+        raise RuntimeError(f"找不到 OpenCLI Node 入口：{entry}")
+    return [node, str(entry)]
+
+
+def run_opencli(
+    args: list[str],
+    timeout: int,
+) -> subprocess.CompletedProcess[str]:
+    """以 UTF-8 文本模式运行 OpenCLI，避免 Windows 默认代码页误解码。"""
+    return subprocess.run(
+        [*resolve_opencli_command(), *args],
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        timeout=timeout,
+    )
+
 def extract_payload(stdout: str) -> str:
     """opencli 会在 stdout 里混入 node 的实验性警告，取第一行 JSON 载荷。"""
     for line in stdout.splitlines():
@@ -60,12 +106,7 @@ def extract_payload(stdout: str) -> str:
 
 
 def run_eval(js: str, session: str, timeout: int) -> object:
-    proc = subprocess.run(
-        ["opencli", "browser", session, "eval", js],
-        capture_output=True,
-        text=True,
-        timeout=timeout,
-    )
+    proc = run_opencli(["browser", session, "eval", js], timeout)
     if proc.returncode != 0:
         raise RuntimeError(
             f"opencli browser eval 失败（exit {proc.returncode}）：\n"
@@ -75,11 +116,8 @@ def run_eval(js: str, session: str, timeout: int) -> object:
 
 
 def open_site(server: str, session: str, timeout: int, window: str) -> None:
-    proc = subprocess.run(
-        ["opencli", "browser", session, "open", server, "--window", window],
-        capture_output=True,
-        text=True,
-        timeout=timeout,
+    proc = run_opencli(
+        ["browser", session, "open", server, "--window", window], timeout
     )
     if proc.returncode != 0:
         raise RuntimeError(
