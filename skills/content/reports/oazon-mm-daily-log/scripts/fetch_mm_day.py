@@ -95,11 +95,17 @@ def run_opencli(
     )
 
 def extract_payload(stdout: str) -> str:
-    """opencli 会在 stdout 里混入 node 的实验性警告，取第一行 JSON 载荷。"""
-    for line in stdout.splitlines():
+    """opencli 会在 stdout 里混入 node 的实验性警告，取 JSON 载荷。
+
+    载荷不保证是单行：消息正文里的换行会被原样带出来，只取首行会把 JSON
+    从中间截断（报 Unterminated string）。所以从第一行 JSON 起把余下的行
+    全部接回去。
+    """
+    lines = stdout.splitlines()
+    for idx, line in enumerate(lines):
         stripped = line.strip()
         if stripped.startswith("{") or stripped.startswith("["):
-            return stripped
+            return "\n".join([stripped, *lines[idx + 1:]])
     raise RuntimeError(
         "opencli 返回中找不到 JSON 载荷；原始输出：\n" + stdout[:2000]
     )
@@ -112,7 +118,9 @@ def run_eval(js: str, session: str, timeout: int) -> object:
             f"opencli browser eval 失败（exit {proc.returncode}）：\n"
             f"{proc.stderr[:2000]}\n{proc.stdout[:2000]}"
         )
-    return json.loads(extract_payload(proc.stdout))
+    # strict=False：消息正文里的裸控制字符（换行、制表）会让严格模式直接报
+    # Invalid control character，这些字符对归纳无害，容忍即可。
+    return json.loads(extract_payload(proc.stdout), strict=False)
 
 
 def open_site(server: str, session: str, timeout: int, window: str) -> None:
