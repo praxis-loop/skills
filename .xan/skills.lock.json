@@ -213,12 +213,12 @@
         "value": "main"
       },
       "resolved": {
-        "commit": "59dcdf559bf3b3cd2182a704faadeda0c8993042",
-        "treeSha": "77fdf8e6409a05f4e1d5851fa0d434defba7344c"
+        "commit": "7690ba4446b0bc0eb4b46c62f493469148752fae",
+        "treeSha": "b8378f1942cd7bc0e76c2824f29c2c8b97cc6b66"
       },
       "target": "skills/platforms/lark/lark-drive",
-      "contentSha256": "sha256:42e1ab87e1ba18b410a1e61f0d931e1ea29ab0020fcf26bcf27c697af7ec72fd",
-      "syncedAt": "2026-09-02T07:54:22.906Z",
+      "contentSha256": "sha256:65f9012b4a7d9a77d965ba6e4d24129ae518b70a92657b7e5a1536e0821c8b87",
+      "syncedAt": "2026-09-03T08:02:10.584Z",
       "riskFlags": [
         "mentions secret-bearing path"
       ]
