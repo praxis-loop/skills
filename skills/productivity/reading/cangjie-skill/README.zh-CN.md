@@ -41,17 +41,20 @@
 
 cangjie-skill 同时提供独立的 DeepSeek Harness 插件安装包。适配层封装在 Release 安装包中，不会向本仓库加入特定平台的包装文件。
 
-已安装 DeepSeek Harness 后，运行：
+已安装 DeepSeek Harness 后，下载 v2.5.0 安装包与校验文件，校验通过后再从本地包安装：
 
 ```bash
 mkdir -p ~/.dsh/packages
-curl -fL "https://github.com/kangarooking/cangjie-skill/releases/download/v2.0.0/dsh-cangjie-skill-2.0.0.tgz" \
-  -o ~/.dsh/packages/dsh-cangjie-skill-2.0.0.tgz
-dsh plugin --profile web add ~/.dsh/packages/dsh-cangjie-skill-2.0.0.tgz
+curl -fL "https://github.com/kangarooking/cangjie-skill/releases/download/v2.5.0/dsh-cangjie-skill-2.5.0.tgz" \
+  -o ~/.dsh/packages/dsh-cangjie-skill-2.5.0.tgz
+curl -fL "https://github.com/kangarooking/cangjie-skill/releases/download/v2.5.0/dsh-cangjie-skill-2.5.0.tgz.sha256" \
+  -o ~/.dsh/packages/dsh-cangjie-skill-2.5.0.tgz.sha256
+(cd ~/.dsh/packages && shasum -a 256 -c dsh-cangjie-skill-2.5.0.tgz.sha256)
+dsh plugin --profile web add ~/.dsh/packages/dsh-cangjie-skill-2.5.0.tgz
 dsh web
 ```
 
-[下载 DeepSeek Harness 插件（适配仓颉 Skill v2.0.0）](https://github.com/kangarooking/cangjie-skill/releases/download/v2.0.0/dsh-cangjie-skill-2.0.0.tgz)
+[下载 DeepSeek Harness 插件（适配仓颉 Skill v2.5.0）](https://github.com/kangarooking/cangjie-skill/releases/download/v2.5.0/dsh-cangjie-skill-2.5.0.tgz) · [SHA256 校验文件](https://github.com/kangarooking/cangjie-skill/releases/download/v2.5.0/dsh-cangjie-skill-2.5.0.tgz.sha256)
 
 启动新任务后，可以直接说：
 

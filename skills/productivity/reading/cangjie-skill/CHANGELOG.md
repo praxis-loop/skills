@@ -12,6 +12,9 @@ schema 各自带 `schema_version` 独立演进；宿主锁定的盲测与阈值�
 
 ### Added
 
+- **DeepSeek Harness v2.5.0 Bundle**：补充 `dsh-cangjie-skill-2.5.0.tgz`
+  与 SHA256 校验文件；包内包含 Capability Bundle 方法论、统一 CLI、schemas、
+  extractors、templates 和迁移文档，并通过临时 `DSH_HOME` 安装与配置识别验证。
 - **Capability Bundle 单一事实源**（`.cangjie/capabilities/`）与全套 schema：
   `capability` / `capability-bundle` / `output-decision` / `source-manifest` /
   `change-set` / `dependency-graph` / `eval-suite` / `failure-case` /

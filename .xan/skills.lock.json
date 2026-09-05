@@ -10,12 +10,12 @@
         "value": "main"
       },
       "resolved": {
-        "commit": "44692125abcdb93eab7b0e7a5ecd6ccadf92dc6f",
-        "treeSha": "a7bccbd16412a56bfe0a843969311a4d338078a0"
+        "commit": "34e34bc5c7eb1c7d6cae9f84a9bcc62acb2a971b",
+        "treeSha": "d089ae282530381b9255ac38a3ee641180bea827"
       },
       "target": "skills/productivity/reading/cangjie-skill",
-      "contentSha256": "sha256:ffc62a1f9a8de70e7a5e4eb9ae15d860a50839fcc9de8f644e1f3fd478643da9",
-      "syncedAt": "2026-08-30T09:13:13.570Z",
+      "contentSha256": "sha256:ddc96475c401d61a72a29e51691ddaedcabf4d4cbfe84ee481ae13d0e8b09dd9",
+      "syncedAt": "2026-09-05T07:39:37.260Z",
       "riskFlags": [
         "contains executable helper scripts"
       ]
@@ -177,12 +177,12 @@
         "value": "main"
       },
       "resolved": {
-        "commit": "59dcdf559bf3b3cd2182a704faadeda0c8993042",
-        "treeSha": "8ba609502e3df7333b54c4ce2ba420ac1b07cc00"
+        "commit": "7fd6ef3c07182257ce776cdc5a614e122d5bd4b3",
+        "treeSha": "8fc75888ba97116d69453542e802ff8cf9d5f593"
       },
       "target": "skills/platforms/lark/lark-im",
-      "contentSha256": "sha256:9488dd7e00432aaec99e1a6aa734b3a06a157eb0488363422f164c540ca93535",
-      "syncedAt": "2026-09-02T07:54:24.979Z",
+      "contentSha256": "sha256:bd14f69a4682c801b8dc38d7e0b2f2d021ce8f30133bac567cce20ef7fb08421",
+      "syncedAt": "2026-09-05T07:39:46.521Z",
       "riskFlags": [
         "mentions secret-bearing path"
       ]

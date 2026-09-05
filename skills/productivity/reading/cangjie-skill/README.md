@@ -41,17 +41,20 @@ See the [v2.5.0 release notes](./docs/releases/v2.5.0.md) and [changelog](./CHAN
 
 cangjie-skill also provides a standalone installation package for DeepSeek Harness. The adapter layer is bundled in the Release package, so no platform-specific wrapper files are added to this repository.
 
-After installing DeepSeek Harness, run:
+After installing DeepSeek Harness, download the v2.5.0 package and checksum, verify it, then install from the local tarball:
 
 ```bash
 mkdir -p ~/.dsh/packages
-curl -fL "https://github.com/kangarooking/cangjie-skill/releases/download/v2.0.0/dsh-cangjie-skill-2.0.0.tgz" \
-  -o ~/.dsh/packages/dsh-cangjie-skill-2.0.0.tgz
-dsh plugin --profile web add ~/.dsh/packages/dsh-cangjie-skill-2.0.0.tgz
+curl -fL "https://github.com/kangarooking/cangjie-skill/releases/download/v2.5.0/dsh-cangjie-skill-2.5.0.tgz" \
+  -o ~/.dsh/packages/dsh-cangjie-skill-2.5.0.tgz
+curl -fL "https://github.com/kangarooking/cangjie-skill/releases/download/v2.5.0/dsh-cangjie-skill-2.5.0.tgz.sha256" \
+  -o ~/.dsh/packages/dsh-cangjie-skill-2.5.0.tgz.sha256
+(cd ~/.dsh/packages && shasum -a 256 -c dsh-cangjie-skill-2.5.0.tgz.sha256)
+dsh plugin --profile web add ~/.dsh/packages/dsh-cangjie-skill-2.5.0.tgz
 dsh web
 ```
 
-[Download the DeepSeek Harness plugin (for Cangjie Skill v2.0.0)](https://github.com/kangarooking/cangjie-skill/releases/download/v2.0.0/dsh-cangjie-skill-2.0.0.tgz)
+[Download the DeepSeek Harness plugin (for Cangjie Skill v2.5.0)](https://github.com/kangarooking/cangjie-skill/releases/download/v2.5.0/dsh-cangjie-skill-2.5.0.tgz) · [SHA256 checksum](https://github.com/kangarooking/cangjie-skill/releases/download/v2.5.0/dsh-cangjie-skill-2.5.0.tgz.sha256)
 
 After starting a new task, you can say:
 
